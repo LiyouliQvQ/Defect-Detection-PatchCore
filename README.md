@@ -31,47 +31,53 @@ CV_PROJECT/
 ├── vision_server.py       # 视觉底层控制服务
 ├── compare_models.py      # 模型对比评估脚本
 └── .gitignore             # 严格的 Git 忽略配置文件
-🛠️ 环境依赖与安装
-克隆仓库:
+```
 
-Bash
-git clone [https://github.com/你的用户名/Defect-Detection-PatchCore.git](https://github.com/你的用户名/Defect-Detection-PatchCore.git)
+## 🛠️ 环境依赖与安装
+
+1. **克隆仓库**:
+```bash
+git clone [https://github.com/LiyouliQvQ/Defect-Detection-PatchCore.git](https://github.com/LiyouliQvQ/Defect-Detection-PatchCore.git)
 cd Defect-Detection-PatchCore
-配置 Python 环境:
-推荐使用 Conda 管理环境。
+```
 
-Bash
+2. **配置 Python 环境**:
+推荐使用 Conda 管理环境。
+```bash
 conda create -n cv_lab python=3.8
 conda activate cv_lab
 pip install -r requirements.txt  # 请确保已安装 torch, anomalib 等依赖
-配置海康驱动:
+```
+
+3. **配置海康驱动**:
 请确保电脑已正确安装海康 MVS 客户端，且相机处于可连接状态。
 
-🚀 快速开始 (Quick Start)
-Step 1: 硬件神经通路测试
+## 🚀 快速开始 (Quick Start)
+
+**Step 1: 硬件神经通路测试**
 运行以下指令，验证海康 SDK 导入及物理相机连接是否正常：
-
-Bash
+```bash
 python camera_test.py
-# 期待输出: 第一关通过... 第二关通过... 报告长官：当前电脑物理接口共连接了 [X] 台海康工业相机。
-Step 2: 自定义数据训练
-将你的良品/不良品图片放入 datasets/ 目录下，执行：
+```
 
-Bash
+**Step 2: 自定义数据训练**
+将你的良品/不良品图片放入 `datasets/` 目录下，执行：
+```bash
 python train_my_data.py
-Step 3: 端到端实时推理
-调用训练好的 .ckpt 模型，启动连接相机的实时检测：
+```
 
-Bash
+**Step 3: 端到端实时推理**
+调用训练好的 `.ckpt` 模型，启动连接相机的实时检测：
+```bash
 python run_demo.py
-🗺️ Roadmap (未来规划)
-[x] 跑通 PatchCore 算法与海康底层驱动闭环。
+```
 
-[x] 完成 Git 工程化部署与 .gitignore 规范。
+## 🗺️ Roadmap (未来规划)
 
-[ ] 开发基于 PyQt/PySide 的可视化交互界面 (GUI)。
+- [x] 跑通 PatchCore 算法与海康底层驱动闭环。
+- [x] 完成 Git 工程化部署与 `.gitignore` 规范。
+- [ ] 开发基于 PyQt/PySide 的可视化交互界面 (GUI)。
+- [ ] 增加多相机并发推理支持。
 
-[ ] 增加多相机并发推理支持。
-
-🤝 贡献与反馈
+## 🤝 贡献与反馈
 如果你在工业部署中遇到任何问题，欢迎提交 Issue。
