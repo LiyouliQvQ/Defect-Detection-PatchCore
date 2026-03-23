@@ -10,7 +10,7 @@ def start_server(host='127.0.0.1', port=8080):
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
     server_socket.listen(1)
-    logger.info(f"视觉多专家总控系统已就绪，端口 {port} 监听中...")
+    logger.info(f"视觉模块已就绪，端口 {port} 监听中...")
 
     while True:
         conn, addr = server_socket.accept()
@@ -26,24 +26,24 @@ def start_server(host='127.0.0.1', port=8080):
                 
                 # --- 多专家路由分发中心 ---
                 if data == "TRIGGER_FLANGE":
-                    logger.info("📷 海康相机(法兰焦段) 极速曝光抓图...")
+                    logger.info("海康相机(法兰焦段) 极速曝光抓图...")
                     time.sleep(0.5)
-                    logger.info("🧠 唤醒 [外侧法兰面_PatchCore专家] 进行推理...")
+                    logger.info("唤醒 [外侧法兰面_视觉模块] 进行推理...")
                     time.sleep(1)
                     # 模拟 90% 的概率是良品
                     result = "[OK] 法兰面无划伤" if random.random() > 0.1 else "[NG] 检出法兰边缘划伤"
                     
                 elif data == "TRIGGER_HOLE":
-                    logger.info("📷 海康相机(深孔焦段) 极速曝光抓图...")
+                    logger.info("海康相机(深孔焦段) 极速曝光抓图...")
                     time.sleep(0.5)
-                    logger.info("🧠 唤醒 [内部深孔_PatchCore专家] 进行推理...")
+                    logger.info("唤醒 [内部深孔_视觉模块] 进行推理...")
                     time.sleep(1)
                     # 模拟 80% 的概率是良品
                     result = "[OK] 深孔内壁平整" if random.random() > 0.2 else "[NG] 检出深孔内壁砂眼"
                 else:
                     result = "[ERROR] 未知机位指令"
 
-                logger.info(f"★ 推理完毕，下发判定结果: {result}\n" + "-"*40)
+                logger.info(f"推理完毕，下发判定结果: {result}\n" + "-"*40)
                 conn.sendall(result.encode('utf-8'))
                     
         except ConnectionResetError:
