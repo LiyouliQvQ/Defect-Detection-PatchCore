@@ -1,55 +1,21 @@
-import socket
-import time
-import logging
-import random
+import cv2
+import os
 
-logging.basicConfig(level=logging.INFO, format='[%(asctime)s] [%(levelname)s] [%(name)s]: %(message)s')
-logger = logging.getLogger("Vision_Server")
 
-def start_server(host='127.0.0.1', port=8080):
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind((host, port))
-    server_socket.listen(1)
-    logger.info(f"视觉模块已就绪，端口 {port} 监听中...")
+class VisionServer:
+    def __init__(self):
+        pass
 
-    while True:
-        conn, addr = server_socket.accept()
-        logger.info(f"机械臂客户端接入，来源 IP: {addr}")
+    def infer(self, image_path):
+        if not os.path.exists(image_path):
+            raise Exception("图片不存在")
 
-        try:
-            while True:
-                data = conn.recv(1024).decode('utf-8')
-                if not data:
-                    break
-                
-                logger.info(f"收到硬件请求: [{data}]")
-                
-                # --- 多专家路由分发中心 ---
-                if data == "TRIGGER_FLANGE":
-                    logger.info("海康相机(法兰焦段) 极速曝光抓图...")
-                    time.sleep(0.5)
-                    logger.info("唤醒 [外侧法兰面_视觉模块] 进行推理...")
-                    time.sleep(1)
-                    # 模拟 90% 的概率是良品
-                    result = "[OK] 法兰面无划伤" if random.random() > 0.1 else "[NG] 检出法兰边缘划伤"
-                    
-                elif data == "TRIGGER_HOLE":
-                    logger.info("海康相机(深孔焦段) 极速曝光抓图...")
-                    time.sleep(0.5)
-                    logger.info("唤醒 [内部深孔_视觉模块] 进行推理...")
-                    time.sleep(1)
-                    # 模拟 80% 的概率是良品
-                    result = "[OK] 深孔内壁平整" if random.random() > 0.2 else "[NG] 检出深孔内壁砂眼"
-                else:
-                    result = "[ERROR] 未知机位指令"
+        image = cv2.imread(image_path)
 
-                logger.info(f"推理完毕，下发判定结果: {result}\n" + "-"*40)
-                conn.sendall(result.encode('utf-8'))
-                    
-        except ConnectionResetError:
-            logger.warning("机械臂通讯中断。")
-        finally:
-            conn.close()
+        # 模拟检测（你后面换PatchCore）
+        has_defect = True
 
-if __name__ == "__main__":
-    start_server()
+        # 假设检测到缺陷位置 → 转成机械臂坐标
+        pose = [0.4, 0.2, 0.3, 0, 3.14, 0]
+
+        return has_defect, pose
